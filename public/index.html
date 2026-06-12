@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShoeStore</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-logo">ShoeStore</div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="categories.html">Categories</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="login.html" class="btn-login">Login</a>
+      <button class="cart-icon" onclick="toggleCart()">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+  <!-- ===== CART SIDE PANEL ===== -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="cart-empty">Your Cart is Empty</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">£0.00</span>
+      </div>
+      <div class="coupon-row">
+        <input type="text" placeholder="Promo code" id="couponInput"/>
+        <button onclick="applyCoupon()">Apply</button>
+      </div>
+      <a href="checkout.html" class="btn-checkout">Checkout</a>
+    </div>
+  </div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-tag">New Collection 2025</p>
+      <h1>Step Into <br/><span>Style</span></h1>
+      <p class="hero-sub">Premium shoes for every occasion. Discover the latest drops.</p>
+      <div class="hero-btns">
+        <a href="products.html" class="btn-primary">Shop Now</a>
+        <a href="categories.html" class="btn-outline">Browse Categories</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="hero-img-placeholder">
+        <i class="fas fa-shoe-prints"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES STRIP ===== -->
+  <section class="features-strip">
+    <div class="feature"><i class="fas fa-truck"></i><span>Free Delivery over £50</span></div>
+    <div class="feature"><i class="fas fa-undo"></i><span>30-Day Returns</span></div>
+    <div class="feature"><i class="fas fa-shield-alt"></i><span>Secure Payments</span></div>
+    <div class="feature"><i class="fas fa-headset"></i><span>24/7 Support</span></div>
+  </section>
+
+  <!-- ===== FEATURED PRODUCTS (loaded from MongoDB) ===== -->
+  <section class="featured-section">
+    <div class="section-header">
+      <h2>Featured Products</h2>
+      <a href="products.html" class="view-all">View All →</a>
+    </div>
+    <div class="products-grid" id="featuredGrid">
+      <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+    </div>
+  </section>
+
+  <!-- ===== SHOP BY GENDER ===== -->
+  <section class="gender-home-section">
+    <div class="section-header"><h2>Shop by Gender</h2></div>
+    <div class="gender-home-grid">
+      <a href="categories.html?gender=men" class="gender-home-card men-home">
+        <i class="fas fa-mars"></i><h3>Men</h3><p>Performance & Style</p>
+      </a>
+      <a href="categories.html?gender=women" class="gender-home-card women-home">
+        <i class="fas fa-venus"></i><h3>Women</h3><p>Comfort & Fashion</p>
+      </a>
+      <a href="categories.html?gender=kids" class="gender-home-card kids-home">
+        <i class="fas fa-child"></i><h3>Kids</h3><p>Fun & Durable</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== CATEGORIES ===== -->
+  <section class="categories-section">
+    <div class="section-header"><h2>Shop by Category</h2></div>
+    <div class="categories-grid">
+      <a href="categories.html?cat=running" class="cat-card"><i class="fas fa-running"></i><span>Running</span></a>
+      <a href="categories.html?cat=casual"  class="cat-card"><i class="fas fa-tshirt"></i><span>Casual</span></a>
+      <a href="categories.html?cat=sport"   class="cat-card"><i class="fas fa-basketball-ball"></i><span>Sport</span></a>
+      <a href="categories.html?cat=hiking"  class="cat-card"><i class="fas fa-mountain"></i><span>Hiking</span></a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="contact">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>ShoeStore</h3>
+        <p>Premium footwear for every step.</p>
+      </div>
+      <div class="footer-links" id="about">
+        <h4>About Us</h4>
+        <p style="color:#ccc;font-size:0.88rem;line-height:1.7;max-width:220px;">
+          ShoeStore is your destination for premium footwear for men, women and kids.
+        </p>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> support@shoestore.com</p>
+        <p><i class="fas fa-phone"></i> +44 113 000 0000</p>
+        <p><i class="fas fa-map-marker-alt"></i> Leeds, United Kingdom</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Shop</a></li>
+          <li><a href="categories.html">Categories</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="profile.html">My Account</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 ShoeStore. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    // Load featured products from MongoDB (first 4)
+    async function loadFeatured() {
+      try {
+        const res  = await fetch('/api/products');
+        const data = await res.json();
+        const grid = document.getElementById('featuredGrid');
+
+        if (data.length === 0) {
+          grid.innerHTML = '<p style="color:#888;grid-column:1/-1;text-align:center;padding:2rem;">No products yet. Add products from the admin panel.</p>';
+          return;
+        }
+
+        // Show first 4 products
+        const featured = data.slice(0, 4);
+        grid.innerHTML  = featured.map(p => {
+          const id  = p._id;
+          const img = p.image
+            ? `<img src="${p.image}" alt="${p.name}" style="width:100%;height:220px;object-fit:cover;"/>`
+            : `<div class="product-img-placeholder"><i class="fas fa-shoe-prints"></i></div>`;
+          return `
+            <div class="product-card" onclick="window.location.href='product-detail.html?id=${id}'" style="cursor:pointer">
+              <div class="product-img-wrap">
+                ${img}
+                <span class="gender-tag gender-${p.gender}">${p.gender}</span>
+                <button class="quick-add" onclick="event.stopPropagation(); addToCart('${p.name}', ${p.price})">Add to Cart</button>
+              </div>
+              <div class="product-info">
+                <h4>${p.name}</h4>
+                <p class="product-cat">${p.category}</p>
+                <span class="product-price">£${parseFloat(p.price).toFixed(2)}</span>
+              </div>
+            </div>`;
+        }).join('');
+      } catch (err) {
+        document.getElementById('featuredGrid').innerHTML =
+          '<p style="color:#888;grid-column:1/-1;text-align:center;padding:2rem;">Could not load products. Make sure the server is running.</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadFeatured);
+  </script>
+</body>
+</html>

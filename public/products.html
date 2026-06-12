@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop — ShoeStore</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">ShoeStore</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html" class="active">Shop</a></li>
+      <li><a href="categories.html">Categories</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="index.html#about">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="login.html" class="btn-login">Login</a>
+      <button class="cart-icon" onclick="toggleCart()">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+  </nav>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"><p class="cart-empty">Your Cart is Empty</p></div>
+    <div class="cart-footer">
+      <div class="cart-total"><span>Total:</span><span id="cartTotal">£0.00</span></div>
+      <div class="coupon-row">
+        <input type="text" placeholder="Promo code" id="couponInput"/>
+        <button onclick="applyCoupon()">Apply</button>
+      </div>
+      <a href="checkout.html" class="btn-checkout">Checkout</a>
+    </div>
+  </div>
+
+  <section class="page-header">
+    <h1>All Products</h1>
+    <p>Find your perfect pair</p>
+  </section>
+
+  <!-- GENDER NAV BAR -->
+  <div class="gender-navbar">
+    <button class="gender-nav-btn active" onclick="filterByGender('all', this)">
+      <i class="fas fa-th"></i> All
+    </button>
+    <button class="gender-nav-btn" onclick="filterByGender('men', this)">
+      <i class="fas fa-mars"></i> Men
+    </button>
+    <button class="gender-nav-btn" onclick="filterByGender('women', this)">
+      <i class="fas fa-venus"></i> Women
+    </button>
+    <button class="gender-nav-btn" onclick="filterByGender('kids', this)">
+      <i class="fas fa-child"></i> Kids
+    </button>
+  </div>
+
+  <section class="shop-layout">
+
+    <!-- FILTERS SIDEBAR -->
+    <aside class="filters-sidebar">
+      <h3>Filters</h3>
+
+      <div class="filter-group">
+        <h4>Gender</h4>
+        <label><input type="checkbox" class="filter-gender" value="men"   onchange="applyFilters()"> <i class="fas fa-mars"></i> Men</label>
+        <label><input type="checkbox" class="filter-gender" value="women" onchange="applyFilters()"> <i class="fas fa-venus"></i> Women</label>
+        <label><input type="checkbox" class="filter-gender" value="kids"  onchange="applyFilters()"> <i class="fas fa-child"></i> Kids</label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Category</h4>
+        <label><input type="checkbox" class="filter-cat" value="running" onchange="applyFilters()"> Running</label>
+        <label><input type="checkbox" class="filter-cat" value="casual"  onchange="applyFilters()"> Casual</label>
+        <label><input type="checkbox" class="filter-cat" value="sport"   onchange="applyFilters()"> Sport</label>
+        <label><input type="checkbox" class="filter-cat" value="hiking"  onchange="applyFilters()"> Hiking</label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Price Range</h4>
+        <label><input type="radio" name="price" value="all"    checked onchange="applyFilters()"> All Prices</label>
+        <label><input type="radio" name="price" value="0-50"   onchange="applyFilters()"> Under £50</label>
+        <label><input type="radio" name="price" value="50-100" onchange="applyFilters()"> £50 – £100</label>
+        <label><input type="radio" name="price" value="100+"   onchange="applyFilters()"> Over £100</label>
+      </div>
+
+      <button class="btn-clear-filters" onclick="clearFilters()">Clear Filters</button>
+    </aside>
+
+    <!-- PRODUCTS AREA -->
+    <div class="shop-main">
+      <div class="shop-toolbar">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search shoes..." oninput="applyFilters()"/>
+        </div>
+        <select id="sortSelect" onchange="applyFilters()">
+          <option value="default">Sort: Default</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="name-az">Name: A–Z</option>
+        </select>
+        <span class="product-count" id="productCount">0 Products</span>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading products...</div>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand"><h3>ShoeStore</h3><p>Premium footwear for every step.</p></div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Shop</a></li>
+          <li><a href="categories.html">Categories</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> support@shoestore.com</p>
+        <p><i class="fas fa-phone"></i> +44 113 000 0000</p>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 ShoeStore. All rights reserved.</p></div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="products.js"></script>
+</body>
+</html>

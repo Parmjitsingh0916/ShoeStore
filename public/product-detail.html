@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product — ShoeStore</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-logo">ShoeStore</div>
+    <ul class="nav-links">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="products.html">Shop</a></li>
+  <li><a href="categories.html">Categories</a></li>
+  <li><a href="index.html#contact">Contact</a></li>
+  <li><a href="index.html#about">About</a></li>
+</ul>
+    <div class="nav-right">
+      <a href="login.html" class="btn-login">Login</a>
+      <button class="cart-icon" onclick="toggleCart()">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+  <!-- ===== CART SIDE PANEL ===== -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="cart-empty">Your Cart is Empty</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">£0.00</span>
+      </div>
+      <div class="coupon-row">
+        <input type="text" placeholder="Promo code" id="couponInput"/>
+        <button onclick="applyCoupon()">Apply</button>
+      </div>
+      <a href="checkout.html" class="btn-checkout">Checkout</a>
+    </div>
+  </div>
+
+  <!-- ===== BREADCRUMB ===== -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <i class="fas fa-chevron-right"></i>
+    <a href="products.html">Shop</a>
+    <i class="fas fa-chevron-right"></i>
+    <span id="breadcrumbName">Product</span>
+  </div>
+
+  <!-- ===== PRODUCT DETAIL ===== -->
+  <section class="product-detail-section">
+
+    <!-- IMAGE GALLERY -->
+    <div class="product-gallery">
+      <div class="gallery-main" id="mainImage">
+        <div class="product-img-placeholder large-placeholder">
+          <i class="fas fa-shoe-prints"></i>
+        </div>
+      </div>
+      <div class="gallery-thumbs" id="galleryThumbs">
+        <!-- Thumbnails rendered by JS -->
+      </div>
+    </div>
+
+    <!-- PRODUCT INFO -->
+    <div class="product-info-panel">
+
+      <div class="product-badges" id="productBadges"></div>
+
+      <h1 class="product-title" id="productName">Loading...</h1>
+
+      <div class="product-rating">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+        <span id="ratingText">4.5 (24 reviews)</span>
+      </div>
+
+      <div class="product-price-wrap">
+        <span class="product-detail-price" id="productPrice">£0.00</span>
+        <span class="product-detail-oldprice hidden" id="productOldPrice"></span>
+      </div>
+
+      <p class="product-description" id="productDescription"></p>
+
+      <div class="product-divider"></div>
+
+      <!-- COLOUR SELECTOR -->
+      <div class="selector-group">
+        <label>Colour: <strong id="selectedColour">—</strong></label>
+        <div class="colour-options" id="colourOptions"></div>
+      </div>
+
+      <!-- SIZE SELECTOR -->
+      <div class="selector-group">
+        <label>Size (UK): <strong id="selectedSize">—</strong></label>
+        <div class="size-options" id="sizeOptions"></div>
+      </div>
+
+      <!-- QUANTITY -->
+      <div class="selector-group">
+        <label>Quantity:</label>
+        <div class="qty-wrap">
+          <button onclick="changeQty(-1)">−</button>
+          <span id="qtyDisplay">1</span>
+          <button onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+
+      <div class="product-divider"></div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="product-actions">
+        <button class="btn-add-to-cart" onclick="addProductToCart()">
+          <i class="fas fa-shopping-bag"></i> Add to Cart
+        </button>
+        <button class="btn-wishlist" id="wishlistBtn" onclick="toggleWishlist()">
+          <i class="far fa-heart"></i>
+        </button>
+      </div>
+
+      <div class="add-to-cart-msg hidden" id="addMsg">
+        <i class="fas fa-check-circle"></i> Added to cart!
+      </div>
+
+      <div class="product-divider"></div>
+
+      <!-- PRODUCT META -->
+      <div class="product-meta">
+        <div class="meta-row">
+          <i class="fas fa-tag"></i>
+          <span>Category: <strong id="productCategory"></strong></span>
+        </div>
+        <div class="meta-row">
+          <i class="fas fa-box"></i>
+          <span>Stock: <strong id="productStock"></strong></span>
+        </div>
+        <div class="meta-row">
+          <i class="fas fa-truck"></i>
+          <span>Free delivery on orders over £50</span>
+        </div>
+        <div class="meta-row">
+          <i class="fas fa-undo"></i>
+          <span>30-day free returns</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== PRODUCT TABS (Description / Details / Reviews) ===== -->
+  <section class="product-tabs-section">
+    <div class="product-tabs">
+      <button class="product-tab active" onclick="switchProductTab('description', this)">Description</button>
+      <button class="product-tab" onclick="switchProductTab('details', this)">Details</button>
+      <button class="product-tab" onclick="switchProductTab('reviews', this)">Reviews</button>
+    </div>
+
+    <div class="product-tab-content" id="tab-description">
+      <p id="tabDescription"></p>
+    </div>
+
+    <div class="product-tab-content hidden" id="tab-details">
+      <table class="details-table">
+        <tr><td>Brand</td><td>ShoeStore</td></tr>
+        <tr><td>Material</td><td id="detailMaterial"></td></tr>
+        <tr><td>Sole</td><td id="detailSole"></td></tr>
+        <tr><td>Closure</td><td id="detailClosure"></td></tr>
+        <tr><td>Category</td><td id="detailCategory"></td></tr>
+        <tr><td>Weight</td><td id="detailWeight"></td></tr>
+      </table>
+    </div>
+
+    <div class="product-tab-content hidden" id="tab-reviews">
+      <div class="reviews-list" id="reviewsList"></div>
+    </div>
+  </section>
+
+  <!-- ===== RELATED PRODUCTS ===== -->
+  <section class="related-section">
+    <div class="section-header">
+      <h2>You May Also Like</h2>
+    </div>
+    <div class="products-grid" id="relatedGrid"></div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>ShoeStore</h3>
+        <p>Premium footwear for every step.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Shop</a></li>
+          <li><a href="categories.html">Categories</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> support@shoestore.com</p>
+        <p><i class="fas fa-phone"></i> +44 113 000 0000</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 ShoeStore. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="product-detail.js"></script>
+</body>
+</html>

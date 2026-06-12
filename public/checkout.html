@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout — ShoeStore</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-logo">ShoeStore</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="categories.html">Categories</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="login.html" class="btn-login">Login</a>
+      <button class="cart-icon" onclick="toggleCart()">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+  <!-- ===== CART SIDE PANEL ===== -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="cart-empty">Your Cart is Empty</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">£0.00</span>
+      </div>
+      <div class="coupon-row">
+        <input type="text" placeholder="Promo code" id="couponInput"/>
+        <button onclick="applyCoupon()">Apply</button>
+      </div>
+      <a href="checkout.html" class="btn-checkout">Checkout</a>
+    </div>
+  </div>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section class="page-header">
+    <h1>Checkout</h1>
+    <p>Complete your order</p>
+  </section>
+
+  <!-- ===== CHECKOUT LAYOUT ===== -->
+  <section class="checkout-layout">
+
+    <!-- LEFT: FORM -->
+    <div class="checkout-form-col">
+
+      <!-- PROGRESS STEPS -->
+      <div class="checkout-steps">
+        <div class="step active" id="step1indicator">
+          <span class="step-num">1</span>
+          <span class="step-label">Delivery</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" id="step2indicator">
+          <span class="step-num">2</span>
+          <span class="step-label">Payment</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" id="step3indicator">
+          <span class="step-num">3</span>
+          <span class="step-label">Confirm</span>
+        </div>
+      </div>
+
+      <!-- STEP 1: DELIVERY DETAILS -->
+      <div class="checkout-step" id="step1">
+        <h3>Delivery Details</h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="firstName" placeholder="John" />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="lastName" placeholder="Smith" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="checkoutEmail" placeholder="you@example.com" />
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="phone" placeholder="+44 7700 000000" />
+        </div>
+
+        <div class="form-group">
+          <label>Address Line 1</label>
+          <input type="text" id="address1" placeholder="123 High Street" />
+        </div>
+
+        <div class="form-group">
+          <label>Address Line 2 (optional)</label>
+          <input type="text" id="address2" placeholder="Flat 2B" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" id="city" placeholder="Leeds" />
+          </div>
+          <div class="form-group">
+            <label>Postcode</label>
+            <input type="text" id="postcode" placeholder="LS1 1AA" />
+          </div>
+        </div>
+
+        <div class="checkout-error" id="step1Error"></div>
+        <button class="btn-next" onclick="goToStep(2)">
+          Continue to Payment <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- STEP 2: PAYMENT -->
+      <div class="checkout-step hidden" id="step2">
+        <h3>Payment Details</h3>
+
+        <div class="stripe-notice">
+          <i class="fas fa-info-circle"></i>
+          <span>Test mode — use card number <strong>4242 4242 4242 4242</strong></span>
+        </div>
+
+        <div class="form-group">
+          <label>Name on Card</label>
+          <input type="text" id="cardName" placeholder="John Smith" />
+        </div>
+
+        <div class="form-group">
+          <label>Card Number</label>
+          <div class="card-input-wrap">
+            <i class="fas fa-credit-card"></i>
+            <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242"
+              maxlength="19" oninput="formatCard(this)" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Expiry Date</label>
+            <input type="text" id="cardExpiry" placeholder="MM/YY"
+              maxlength="5" oninput="formatExpiry(this)" />
+          </div>
+          <div class="form-group">
+            <label>CVV</label>
+            <input type="text" id="cardCvv" placeholder="123" maxlength="3" />
+          </div>
+        </div>
+
+        <div class="checkout-error" id="step2Error"></div>
+
+        <div class="step-btns">
+          <button class="btn-back" onclick="goToStep(1)">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+          <button class="btn-next" onclick="goToStep(3)">
+            Review Order <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: CONFIRM ORDER -->
+      <div class="checkout-step hidden" id="step3">
+        <h3>Review & Confirm</h3>
+
+        <div class="confirm-section">
+          <h4><i class="fas fa-map-marker-alt"></i> Delivery To</h4>
+          <p id="confirmAddress"></p>
+        </div>
+
+        <div class="confirm-section">
+          <h4><i class="fas fa-credit-card"></i> Payment</h4>
+          <p id="confirmCard"></p>
+        </div>
+
+        <div class="confirm-section">
+          <h4><i class="fas fa-shopping-bag"></i> Order Summary</h4>
+          <div id="confirmItems"></div>
+          <div class="confirm-total">
+            <span>Total:</span>
+            <span id="confirmTotal"></span>
+          </div>
+        </div>
+
+        <div class="checkout-error" id="step3Error"></div>
+
+        <div class="step-btns">
+          <button class="btn-back" onclick="goToStep(2)">
+            <i class="fas fa-arrow-left"></i> Back
+          </button>
+          <button class="btn-place-order" onclick="placeOrder()">
+            <i class="fas fa-lock"></i> Place Order
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: ORDER SUMMARY -->
+    <div class="checkout-summary-col">
+      <div class="order-summary-box">
+        <h3>Order Summary</h3>
+        <div id="summaryItems"></div>
+        <div class="summary-divider"></div>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="summarySubtotal">£0.00</span>
+        </div>
+        <div class="summary-row">
+          <span>Delivery</span>
+          <span id="summaryDelivery">Free</span>
+        </div>
+        <div class="summary-row total-row">
+          <span>Total</span>
+          <span id="summaryTotal">£0.00</span>
+        </div>
+        <div class="secure-badge">
+          <i class="fas fa-shield-alt"></i>
+          <span>Secure & encrypted checkout</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== SUCCESS MODAL ===== -->
+  <div class="modal-overlay hidden" id="successModal">
+    <div class="modal-box">
+      <div class="modal-icon"><i class="fas fa-check-circle"></i></div>
+      <h2>Order Placed!</h2>
+      <p>Thank you for your purchase. Your shoes are on their way!</p>
+      <p class="order-ref" id="orderRef"></p>
+      <a href="index.html" class="btn-primary">Back to Home</a>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-bottom">
+      <p>© 2026 ShoeStore. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="checkout.js"></script>
+</body>
+</html>

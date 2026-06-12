@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Categories — ShoeStore</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">ShoeStore</div>
+    <ul class="nav-links">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="products.html">Shop</a></li>
+  <li><a href="categories.html">Categories</a></li>
+  <li><a href="index.html#contact">Contact</a></li>
+  <li><a href="index.html#about">About</a></li>
+</ul>
+    <div class="nav-right">
+      <a href="login.html" class="btn-login">Login</a>
+      <button class="cart-icon" onclick="toggleCart()">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+  </nav>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"><p class="cart-empty">Your Cart is Empty</p></div>
+    <div class="cart-footer">
+      <div class="cart-total"><span>Total:</span><span id="cartTotal">£0.00</span></div>
+      <div class="coupon-row">
+        <input type="text" placeholder="Promo code" id="couponInput"/>
+        <button onclick="applyCoupon()">Apply</button>
+      </div>
+      <a href="checkout.html" class="btn-checkout">Checkout</a>
+    </div>
+  </div>
+
+  <section class="page-header">
+    <h1>Categories</h1>
+    <p>Shop by your style</p>
+  </section>
+
+  <!-- GENDER TABS -->
+  <section class="gender-section">
+    <div class="gender-cards">
+      <div class="gender-card men-card" onclick="selectGender('men', this)" data-gender="men">
+        <i class="fas fa-mars"></i>
+        <h3>Men</h3>
+        <p>Performance & Style</p>
+      </div>
+      <div class="gender-card women-card" onclick="selectGender('women', this)" data-gender="women">
+        <i class="fas fa-venus"></i>
+        <h3>Women</h3>
+        <p>Comfort & Fashion</p>
+      </div>
+      <div class="gender-card kids-card" onclick="selectGender('kids', this)" data-gender="kids">
+        <i class="fas fa-child"></i>
+        <h3>Kids</h3>
+        <p>Fun & Durable</p>
+      </div>
+    </div>
+
+    <!-- Gender filter tabs -->
+    <div class="gender-tabs-row">
+      <button class="gender-tab-btn active" data-gender="all" onclick="selectGender('all', this)">
+        All
+      </button>
+      <button class="gender-tab-btn" data-gender="men" onclick="selectGender('men', this)">
+        <i class="fas fa-mars"></i> Men
+      </button>
+      <button class="gender-tab-btn" data-gender="women" onclick="selectGender('women', this)">
+        <i class="fas fa-venus"></i> Women
+      </button>
+      <button class="gender-tab-btn" data-gender="kids" onclick="selectGender('kids', this)">
+        <i class="fas fa-child"></i> Kids
+      </button>
+    </div>
+  </section>
+
+  <!-- CATEGORY TABS -->
+  <section class="category-tabs-section">
+    <div class="category-tabs">
+      <button class="tab-btn active" onclick="selectCategory('all', this)"><i class="fas fa-th"></i> All</button>
+      <button class="tab-btn" onclick="selectCategory('running', this)"><i class="fas fa-running"></i> Running</button>
+      <button class="tab-btn" onclick="selectCategory('casual', this)"><i class="fas fa-tshirt"></i> Casual</button>
+      <button class="tab-btn" onclick="selectCategory('sport', this)"><i class="fas fa-basketball-ball"></i> Sport</button>
+      <button class="tab-btn" onclick="selectCategory('hiking', this)"><i class="fas fa-mountain"></i> Hiking</button>
+    </div>
+  </section>
+
+  <!-- BANNER CARDS -->
+  <section class="cat-banners">
+    <div class="cat-banner-card" id="banner-running" onclick="selectCategory('running', null)">
+      <div class="cat-banner-icon"><i class="fas fa-running"></i></div>
+      <div class="cat-banner-info"><h3>Running</h3><p>Built for speed & endurance</p></div>
+    </div>
+    <div class="cat-banner-card" id="banner-casual" onclick="selectCategory('casual', null)">
+      <div class="cat-banner-icon"><i class="fas fa-tshirt"></i></div>
+      <div class="cat-banner-info"><h3>Casual</h3><p>Everyday comfort & style</p></div>
+    </div>
+    <div class="cat-banner-card" id="banner-sport" onclick="selectCategory('sport', null)">
+      <div class="cat-banner-icon"><i class="fas fa-basketball-ball"></i></div>
+      <div class="cat-banner-info"><h3>Sport</h3><p>Performance on every court</p></div>
+    </div>
+    <div class="cat-banner-card" id="banner-hiking" onclick="selectCategory('hiking', null)">
+      <div class="cat-banner-icon"><i class="fas fa-mountain"></i></div>
+      <div class="cat-banner-info"><h3>Hiking</h3><p>Conquer any terrain</p></div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="cat-products-section">
+    <div class="section-header">
+      <h2 id="catTitle">All Products</h2>
+      <span class="product-count" id="productCount">0 Products</span>
+    </div>
+    <div class="products-grid" id="catProductsGrid"></div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand"><h3>ShoeStore</h3><p>Premium footwear for every step.</p></div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Shop</a></li>
+          <li><a href="categories.html">Categories</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> support@shoestore.com</p>
+        <p><i class="fas fa-phone"></i> +44 113 000 0000</p>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 ShoeStore. All rights reserved.</p></div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="categories.js"></script>
+</body>
+</html>

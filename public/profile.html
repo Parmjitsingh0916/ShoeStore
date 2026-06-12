@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile — ShoeStore</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">ShoeStore</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="categories.html">Categories</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="index.html#about">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="login.html" class="btn-login">Login</a>
+      <button class="cart-icon" onclick="toggleCart()">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+  </nav>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"><p class="cart-empty">Your Cart is Empty</p></div>
+    <div class="cart-footer">
+      <div class="cart-total"><span>Total:</span><span id="cartTotal">£0.00</span></div>
+      <div class="coupon-row">
+        <input type="text" placeholder="Promo code" id="couponInput"/>
+        <button onclick="applyCoupon()">Apply</button>
+      </div>
+      <a href="checkout.html" class="btn-checkout">Checkout</a>
+    </div>
+  </div>
+
+  <section class="page-header">
+    <h1>My Account</h1>
+    <p>Manage your profile and orders</p>
+  </section>
+
+  <section class="profile-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="profile-sidebar">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="profileAvatar">P</div>
+        <h3 id="sidebarName">Loading...</h3>
+        <p id="sidebarEmail">...</p>
+      </div>
+      <nav class="profile-nav">
+        <button class="profile-nav-btn active" onclick="switchTab('overview', this)">
+          <i class="fas fa-home"></i> Overview
+        </button>
+        <button class="profile-nav-btn" onclick="switchTab('orders', this)">
+          <i class="fas fa-box"></i> My Orders
+        </button>
+        <button class="profile-nav-btn" onclick="switchTab('wishlist', this)">
+          <i class="fas fa-heart"></i> Wishlist
+        </button>
+        <button class="profile-nav-btn" onclick="switchTab('details', this)">
+          <i class="fas fa-user"></i> Account Details
+        </button>
+        <button class="profile-nav-btn" onclick="switchTab('address', this)">
+          <i class="fas fa-map-marker-alt"></i> Address Book
+        </button>
+        <button class="profile-nav-btn" onclick="switchTab('password', this)">
+          <i class="fas fa-lock"></i> Change Password
+        </button>
+        <button class="profile-nav-btn logout-btn" onclick="handleLogout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="profile-main">
+
+      <!-- OVERVIEW TAB -->
+      <div class="profile-tab" id="tab-overview">
+        <h2>Welcome back, <span id="welcomeName"></span>!</h2>
+        <p class="tab-subtitle">Here's a summary of your account activity.</p>
+
+        <div class="overview-stats">
+          <div class="stat-card">
+            <i class="fas fa-box"></i>
+            <div>
+              <span class="stat-num" id="totalOrders">0</span>
+              <span class="stat-label">Total Orders</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-pound-sign"></i>
+            <div>
+              <span class="stat-num" id="totalSpent">£0.00</span>
+              <span class="stat-label">Total Spent</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-heart"></i>
+            <div>
+              <span class="stat-num" id="wishlistCount">0</span>
+              <span class="stat-label">Wishlist Items</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-subheading">Recent Orders</h3>
+        <div id="recentOrders"></div>
+
+        <div class="overview-quick-links">
+          <a href="products.html" class="quick-link-card">
+            <i class="fas fa-shopping-bag"></i><span>Browse Shop</span>
+          </a>
+          <a href="categories.html" class="quick-link-card">
+            <i class="fas fa-th-large"></i><span>Categories</span>
+          </a>
+          <div class="quick-link-card" onclick="switchTab('wishlist', null)" style="cursor:pointer">
+            <i class="fas fa-heart"></i><span>My Wishlist</span>
+          </div>
+          <div class="quick-link-card" onclick="switchTab('orders', null)" style="cursor:pointer">
+            <i class="fas fa-box"></i><span>All Orders</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDERS TAB -->
+      <div class="profile-tab hidden" id="tab-orders">
+        <h2>My Orders</h2>
+        <p class="tab-subtitle">All your past purchases in one place.</p>
+        <div id="allOrdersList"></div>
+      </div>
+
+      <!-- WISHLIST TAB -->
+      <div class="profile-tab hidden" id="tab-wishlist">
+        <h2>My Wishlist</h2>
+        <p class="tab-subtitle">Products you have saved for later.</p>
+        <div id="wishlistItems">
+          <p class="no-orders">Loading wishlist...</p>
+        </div>
+      </div>
+
+      <!-- ACCOUNT DETAILS TAB -->
+      <div class="profile-tab hidden" id="tab-details">
+        <h2>Account Details</h2>
+        <p class="tab-subtitle">Update your personal information.</p>
+        <div class="profile-form">
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input type="text" id="detailFirstName" placeholder="First name"/></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="detailLastName" placeholder="Last name"/></div>
+          </div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="detailEmail" placeholder="Email address"/></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="detailPhone" placeholder="+44 7700 000000"/></div>
+          <div class="form-group"><label>Date of Birth</label><input type="date" id="detailDob"/></div>
+          <div class="form-success hidden" id="detailsSuccess"><i class="fas fa-check-circle"></i> Details updated successfully!</div>
+          <button class="btn-save" onclick="saveDetails()"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+      </div>
+
+      <!-- ADDRESS TAB -->
+      <div class="profile-tab hidden" id="tab-address">
+        <h2>Address Book</h2>
+        <p class="tab-subtitle">Your saved delivery address.</p>
+        <div class="profile-form">
+          <div class="form-group"><label>Address Line 1</label><input type="text" id="addrLine1" placeholder="123 High Street"/></div>
+          <div class="form-group"><label>Address Line 2 (optional)</label><input type="text" id="addrLine2" placeholder="Flat 2B"/></div>
+          <div class="form-row">
+            <div class="form-group"><label>City</label><input type="text" id="addrCity" placeholder="Leeds"/></div>
+            <div class="form-group"><label>Postcode</label><input type="text" id="addrPostcode" placeholder="LS1 1AA"/></div>
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <select id="addrCountry">
+              <option value="UK">United Kingdom</option>
+              <option value="IE">Ireland</option>
+              <option value="US">United States</option>
+            </select>
+          </div>
+          <div class="form-success hidden" id="addressSuccess"><i class="fas fa-check-circle"></i> Address saved!</div>
+          <button class="btn-save" onclick="saveAddress()"><i class="fas fa-save"></i> Save Address</button>
+        </div>
+      </div>
+
+      <!-- PASSWORD TAB -->
+      <div class="profile-tab hidden" id="tab-password">
+        <h2>Change Password</h2>
+        <p class="tab-subtitle">Keep your account secure.</p>
+        <div class="profile-form">
+          <div class="form-group">
+            <label>Current Password</label>
+            <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" id="currentPw" placeholder="Current password"/></div>
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" id="newPw" placeholder="Min. 6 characters"/></div>
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" id="confirmPw" placeholder="Repeat new password"/></div>
+          </div>
+          <div class="auth-error hidden" id="pwError"></div>
+          <div class="form-success hidden" id="pwSuccess"><i class="fas fa-check-circle"></i> Password changed successfully!</div>
+          <button class="btn-save" onclick="changePassword()"><i class="fas fa-key"></i> Change Password</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-bottom"><p>© 2026 ShoeStore. All rights reserved.</p></div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>
